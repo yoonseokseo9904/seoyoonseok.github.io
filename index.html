@@ -1,12 +1,222 @@
-HTML
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>내 첫 번째 웹사이트</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="[내이름]의 포트폴리오 웹페이지입니다.">
+    <title>[내이름] | Portfolio</title>
+    
+    <!-- Pretendard 폰트 불러오기 -->
+    <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+
+    <style>
+        :root {
+            --navy: #172b4d;
+            --blue: #426da3;
+            --light: #f3f7fb;
+            --line: #e2e8f0;
+            --muted: #586a80;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { 
+            scroll-behavior: smooth; 
+            scroll-padding-top: 88px; 
+        }
+
+        body { 
+            margin: 0; 
+            color: #243248; 
+            font-family: Pretendard, 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; 
+        }
+
+        a { 
+            color: inherit; 
+            text-decoration: none; 
+        }
+
+        .wrap { 
+            max-width: 1050px; 
+            margin: 0 auto; 
+            padding: 0 26px; 
+        }
+
+        /* 상단 헤더 */
+        header { 
+            position: sticky; 
+            top: 0; 
+            z-index: 10; 
+            background: rgba(255, 255, 255, 0.95); 
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .nav { 
+            min-height: 70px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+        }
+
+        .logo { 
+            font-size: 19px; 
+            font-weight: 800; 
+            color: var(--navy); 
+            letter-spacing: -0.5px; 
+        }
+
+        .menu { 
+            display: flex; 
+            gap: 22px; 
+            flex-wrap: wrap; 
+        }
+
+        .menu a { 
+            color: var(--muted); 
+            font-size: 13px; 
+            font-weight: 600; 
+            transition: color 0.2s;
+        }
+
+        .menu a:hover, 
+        .menu a:focus-visible { 
+            color: var(--blue); 
+        }
+
+        /* 메인 히어로 섹션 */
+        .hero { 
+            background: linear-gradient(120deg, #f0f5fb 0%, #ffffff 78%); 
+            padding: 100px 0 80px; 
+        }
+
+        .eyebrow { 
+            color: var(--blue); 
+            font-weight: 700; 
+            font-size: 13px; 
+            letter-spacing: 1px; 
+            text-transform: uppercase;
+        }
+
+        h1 { 
+            color: var(--navy); 
+            font-size: clamp(38px, 6vw, 62px); 
+            line-height: 1.2; 
+            letter-spacing: -1px;
+            margin: 12px 0 20px;
+        }
+
+        .hero p { 
+            max-width: 650px; 
+            color: var(--muted); 
+            font-size: 17px; 
+            line-height: 1.6;
+            margin: 0;
+        }
+
+        .actions { 
+            display: flex; 
+            gap: 12px; 
+            flex-wrap: wrap; 
+            margin-top: 32px; 
+        }
+
+        /* 버튼 스타일 */
+        .btn { 
+            display: inline-block; 
+            border-radius: 8px; 
+            padding: 11px 20px; 
+            font-size: 14px; 
+            font-weight: 600; 
+            transition: all 0.2s;
+        }
+
+        .btn.primary { 
+            background: var(--navy); 
+            color: #ffffff; 
+        }
+
+        .btn.primary:hover {
+            background: #0f1d35;
+        }
+
+        .btn.secondary { 
+            background: #ffffff; 
+            color: var(--navy); 
+            border: 1px solid var(--line);
+        }
+
+        .btn.secondary:hover {
+            background: var(--light);
+        }
+
+        /* 컨텐츠 섹션 */
+        section { 
+            padding: 80px 0; 
+        }
+
+        .section-title { 
+            margin: 0 0 8px; 
+            font-size: 29px; 
+            letter-spacing: -0.8px; 
+            color: var(--navy);
+        }
+
+        .section-sub { 
+            color: var(--muted); 
+            margin: 0 0 32px; 
+            font-size: 14px; 
+        }
+
+        .intro { 
+            max-width: 800px; 
+            font-size: 16px; 
+            line-height: 1.7; 
+        }
+    </style>
 </head>
 <body>
-    <h1>안녕하세요! GitHub Pages 웹사이트입니다.</h1>
-    <p>성공적으로 연결되었습니다.</p>
+
+    <!-- 헤더 영역 -->
+    <header>
+        <div class="wrap nav">
+            <!-- 1. 영문 이름 변경 -->
+            <a href="#" class="logo">[HONG GIL DONG]</a>
+            <nav class="menu">
+                <a href="#about">소개</a>
+                <a href="#projects">프로젝트</a>
+                <a href="#skills">역량</a>
+                <a href="#contact">연락처</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 히어로(메인) 영역 -->
+    <div class="hero">
+        <div class="wrap">
+            <!-- 2. 전공/분야 변경 -->
+            <div class="eyebrow">[경영정학과 / 데이터 분석]</div>
+            <!-- 3. 메인 타이틀 변경 -->
+            <h1>[변화를 만들어가는]<br>[서윤석]입니다.</h1>
+            <!-- 4. 한 줄 소개 변경 -->
+            <p>[소속 학교 및 학과, 목표나 관심 분야에 대한 간단한 설명을 입력하세요.]</p>
+            <div class="actions">
+                <a href="#projects" class="btn primary">프로젝트 보기</a>
+                <a href="#contact" class="btn secondary">연락하기</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 소개 섹션 -->
+    <section id="about">
+        <div class="wrap">
+            <h2 class="section-title">About Me</h2>
+            <p class="section-sub">[나를 표현하는 한 줄 서술]</p>
+            <div class="intro">
+                [안녕하세요! 본인의 관심사, 기술 스택, 추구하는 목표 등을 작성하는 본문 영역입니다.]
+            </div>
+        </div>
+    </section>
+
 </body>
 </html>
