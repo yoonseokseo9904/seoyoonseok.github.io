@@ -1,7 +1,21 @@
 # 기능 명세: 사진 응원 보드
 
 > 작성일: 2026-11-09  
-> 상태: 명세 확정 / 미구현
+> 상태: 배포 완료 / 사진·제목 미입력
+
+## 배포 정보 (2026-11-09 기록)
+
+| 항목 | 값 |
+|---|---|
+| 배포 서비스 | Netlify |
+| Netlify 프로젝트 이름 | superb-stardust-9bcdb7 |
+| 배포 주소 | https://superb-stardust-9bcdb7.netlify.app |
+| GitHub 저장소 | https://github.com/yoonseokseo9904/seoyoonseok.github.io |
+| 배포 브랜치 | main |
+| 기존 GitHub Pages 주소 | https://yoonseokseo9904.github.io/seoyoonseok.github.io/ |
+
+> 서버 함수(Netlify Function)는 새 배포 주소에서만 동작한다.  
+> 기존 GitHub Pages 주소에서는 응원 저장·조회 기능이 작동하지 않는다.
 
 ---
 
