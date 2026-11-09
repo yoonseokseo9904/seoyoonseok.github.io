@@ -1,0 +1,17 @@
+# 환경 변수 — 절대 공개 저장소에 올리지 않음
+.env
+.env.local
+.env.*.local
+
+# Kiro IDE 설정 — 개인 기록, 비밀 포함 가능
+.kiro/
+
+# Node.js 의존성
+node_modules/
+
+# Netlify 로컬 캐시
+.netlify/
+
+# OS 파일
+.DS_Store
+Thumbs.db

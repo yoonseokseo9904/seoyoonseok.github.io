@@ -1,0 +1,24 @@
+[build]
+  # 빌드 명령 없음 — 순수 정적 HTML 프로젝트
+  command       = ""
+  # 공개 출력 폴더 — index.html이 있는 루트
+  publish       = "."
+  # Netlify Function 폴더
+  functions     = "netlify/functions"
+
+[build.environment]
+  # Node.js 버전 (Netlify Function 런타임용)
+  NODE_VERSION = "20"
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options        = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "strict-origin-when-cross-origin"
+
+# /api/* 경로를 Netlify Function으로 라우팅
+[[redirects]]
+  from   = "/api/react"
+  to     = "/.netlify/functions/react"
+  status = 200
