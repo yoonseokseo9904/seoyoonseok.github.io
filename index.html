@@ -217,6 +217,7 @@
             display: flex;
             align-items: center;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .cheer-btn {
@@ -239,6 +240,11 @@
             border-color: var(--blue);
         }
 
+        .cheer-btn.dislike:hover:not(:disabled) {
+            background: #fdecea;
+            border-color: #c0392b;
+        }
+
         .cheer-btn:disabled {
             opacity: 0.6;
             cursor: not-allowed;
@@ -248,7 +254,7 @@
             font-size: 14px;
             color: var(--muted);
             font-weight: 600;
-            min-width: 32px;
+            min-width: 24px;
         }
 
         .cheer-msg {
@@ -319,10 +325,14 @@
                     <div class="photo-card-body">
                         <p class="photo-card-title"></p>
                         <div class="cheer-row">
-                            <button class="cheer-btn" data-photo-id="photo-01" aria-label="사진 1 응원하기">
-                                🤍 응원하기
+                            <button class="cheer-btn" data-photo-id="photo-01" data-reaction="like" aria-label="사진 1 좋아요">
+                                👍 좋아요
                             </button>
-                            <span class="cheer-count" id="count-photo-01">—</span>회
+                            <span class="cheer-count" id="like-photo-01">—</span>
+                            <button class="cheer-btn dislike" data-photo-id="photo-01" data-reaction="dislike" aria-label="사진 1 싫어요">
+                                👎 싫어요
+                            </button>
+                            <span class="cheer-count" id="dislike-photo-01">—</span>
                         </div>
                         <p class="cheer-msg" id="msg-photo-01"></p>
                     </div>
@@ -334,10 +344,14 @@
                     <div class="photo-card-body">
                         <p class="photo-card-title"></p>
                         <div class="cheer-row">
-                            <button class="cheer-btn" data-photo-id="photo-02" aria-label="사진 2 응원하기">
-                                🤍 응원하기
+                            <button class="cheer-btn" data-photo-id="photo-02" data-reaction="like" aria-label="사진 2 좋아요">
+                                👍 좋아요
                             </button>
-                            <span class="cheer-count" id="count-photo-02">—</span>회
+                            <span class="cheer-count" id="like-photo-02">—</span>
+                            <button class="cheer-btn dislike" data-photo-id="photo-02" data-reaction="dislike" aria-label="사진 2 싫어요">
+                                👎 싫어요
+                            </button>
+                            <span class="cheer-count" id="dislike-photo-02">—</span>
                         </div>
                         <p class="cheer-msg" id="msg-photo-02"></p>
                     </div>
@@ -349,10 +363,14 @@
                     <div class="photo-card-body">
                         <p class="photo-card-title"></p>
                         <div class="cheer-row">
-                            <button class="cheer-btn" data-photo-id="photo-03" aria-label="사진 3 응원하기">
-                                🤍 응원하기
+                            <button class="cheer-btn" data-photo-id="photo-03" data-reaction="like" aria-label="사진 3 좋아요">
+                                👍 좋아요
                             </button>
-                            <span class="cheer-count" id="count-photo-03">—</span>회
+                            <span class="cheer-count" id="like-photo-03">—</span>
+                            <button class="cheer-btn dislike" data-photo-id="photo-03" data-reaction="dislike" aria-label="사진 3 싫어요">
+                                👎 싫어요
+                            </button>
+                            <span class="cheer-count" id="dislike-photo-03">—</span>
                         </div>
                         <p class="cheer-msg" id="msg-photo-03"></p>
                     </div>
@@ -364,10 +382,9 @@
 
     <script>
         const API = '/api/react';
-        // 허용된 photo_id 목록 — 서버와 동일하게 유지
         const ALLOWED = ['photo-01', 'photo-02', 'photo-03'];
 
-        // ── 페이지 로드 시 응원 횟수 조회 ───────────────────────
+        // ── 페이지 로드 시 좋아요/싫어요 횟수 조회 ─────────────
         async function loadCounts() {
             try {
                 const res = await fetch(API);
@@ -376,67 +393,60 @@
                 if (!data.counts) throw new Error('응답 형식 오류');
 
                 for (const id of ALLOWED) {
-                    const el = document.getElementById('count-' + id);
-                    // textContent만 사용 — innerHTML 사용 금지
-                    if (el) el.textContent = data.counts[id] ?? 0;
+                    const likeEl    = document.getElementById('like-'    + id);
+                    const dislikeEl = document.getElementById('dislike-' + id);
+                    if (likeEl)    likeEl.textContent    = data.counts[id]?.like    ?? 0;
+                    if (dislikeEl) dislikeEl.textContent = data.counts[id]?.dislike ?? 0;
                 }
             } catch (err) {
                 console.error('횟수 조회 실패:', err.message);
                 for (const id of ALLOWED) {
-                    const el = document.getElementById('count-' + id);
-                    if (el) el.textContent = '?';
+                    const likeEl    = document.getElementById('like-'    + id);
+                    const dislikeEl = document.getElementById('dislike-' + id);
+                    if (likeEl)    likeEl.textContent    = '?';
+                    if (dislikeEl) dislikeEl.textContent = '?';
                 }
             }
         }
 
-        // ── 응원 버튼 클릭 처리 ─────────────────────────────────
-        async function handleCheer(photoId) {
-            // 클라이언트 1차 검사: 허용 목록 확인
-            if (!ALLOWED.includes(photoId)) {
-                console.warn('허용되지 않은 photo_id:', photoId);
-                return;
-            }
+        // ── 버튼 클릭 처리 ──────────────────────────────────────
+        async function handleReaction(photoId, reactionType) {
+            if (!ALLOWED.includes(photoId)) return;
+            if (reactionType !== 'like' && reactionType !== 'dislike') return;
 
-            // photo_id를 DOM 탐색에 사용할 때 CSS selector injection 방지:
-            // data-photo-id 속성으로만 버튼을 찾고 id는 고정 prefix 사용
             const btn = document.querySelector(
-                '[data-photo-id="' + photoId.replace(/"/g, '') + '"]'
+                '[data-photo-id="' + photoId.replace(/"/g, '') + '"]' +
+                '[data-reaction="' + reactionType + '"]'
             );
-            const countEl = document.getElementById('count-' + photoId);
-            const msgEl   = document.getElementById('msg-'   + photoId);
-            if (!btn || !countEl || !msgEl) return;
+            const msgEl = document.getElementById('msg-' + photoId);
+            if (!btn || !msgEl) return;
 
-            // ── 저장 중 상태 ─────────────────────────────────────
             btn.disabled = true;
-            msgEl.textContent = '저장 중…';  // textContent — HTML 실행 안 함
+            msgEl.textContent = '저장 중…';
             msgEl.className = 'cheer-msg';
 
             try {
                 const res = await fetch(API, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ photo_id: photoId }),
+                    body: JSON.stringify({ photo_id: photoId, reaction_type: reactionType }),
                 });
 
-                // ── 서버 응답 확인 후에만 성공 처리 ─────────────
                 if (!res.ok) {
-                    // 서버가 반환한 오류 메시지 파싱 시도
                     let errMsg = '저장에 실패했습니다. 다시 시도해 주세요.';
                     try {
                         const errData = await res.json();
                         if (errData.error) errMsg = errData.error;
-                    } catch { /* json 파싱 실패 시 기본 메시지 사용 */ }
+                    } catch { /* 기본 메시지 사용 */ }
                     throw new Error(errMsg);
                 }
 
-                // ── 성공: 횟수 서버에서 재조회하여 정확한 값 표시 ──
                 await loadCounts();
-                msgEl.textContent = '응원이 저장되었습니다 ✓';
+                msgEl.textContent = (reactionType === 'like' ? '👍' : '👎') + ' 저장되었습니다 ✓';
                 msgEl.className = 'cheer-msg';
                 setTimeout(() => { msgEl.textContent = ''; }, 2000);
 
             } catch (err) {
-                // 실패는 절대 성공으로 표시하지 않음
                 msgEl.textContent = err.message || '저장에 실패했습니다. 다시 시도해 주세요.';
                 msgEl.className = 'cheer-msg error';
             } finally {
@@ -447,7 +457,7 @@
         // ── 버튼 이벤트 등록 ────────────────────────────────────
         document.querySelectorAll('.cheer-btn').forEach(function(btn) {
             btn.addEventListener('click', function() {
-                handleCheer(btn.dataset.photoId);
+                handleReaction(btn.dataset.photoId, btn.dataset.reaction);
             });
         });
 
