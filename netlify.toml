@@ -22,3 +22,8 @@
   from   = "/api/react"
   to     = "/.netlify/functions/react"
   status = 200
+
+[[redirects]]
+  from   = "/api/comments"
+  to     = "/.netlify/functions/comments"
+  status = 200

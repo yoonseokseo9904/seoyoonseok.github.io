@@ -299,6 +299,112 @@
 
         .cheer-msg.error { color: var(--dislike); }
 
+        /* 댓글 */
+        .comments {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--line);
+        }
+
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .comment-form input,
+        .comment-form textarea {
+            width: 100%;
+            background: var(--bg-soft);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 9px 12px;
+            color: var(--text);
+            font-size: 13px;
+            font-family: inherit;
+            resize: vertical;
+        }
+
+        .comment-form input:focus,
+        .comment-form textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .comment-form textarea { min-height: 52px; }
+
+        .comment-submit {
+            align-self: flex-end;
+            background: var(--bg-soft);
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            padding: 8px 16px;
+            color: var(--text);
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s;
+        }
+
+        .comment-submit:hover:not(:disabled) {
+            border-color: var(--accent);
+            background: rgba(110,168,254,0.12);
+        }
+
+        .comment-submit:disabled { opacity: 0.55; cursor: not-allowed; }
+
+        .comment-form-msg {
+            font-size: 12px;
+            min-height: 16px;
+            color: var(--like);
+            font-weight: 600;
+        }
+        .comment-form-msg.error { color: var(--dislike); }
+
+        .comment-list {
+            list-style: none;
+            margin: 14px 0 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .comment-item {
+            background: var(--bg-soft);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 10px 13px;
+        }
+
+        .comment-nick {
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--accent);
+        }
+
+        .comment-date {
+            font-size: 11px;
+            color: var(--muted);
+            margin-left: 8px;
+            font-weight: 500;
+        }
+
+        .comment-text {
+            font-size: 14px;
+            color: #c4cdd8;
+            margin: 5px 0 0;
+            line-height: 1.5;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+
+        .comment-empty {
+            font-size: 13px;
+            color: var(--muted);
+            margin-top: 12px;
+        }
+
         /* 연락처 */
         .contact-box {
             display: inline-flex;
@@ -393,6 +499,16 @@
                             <span class="cheer-count" id="dislike-photo-01">—</span>
                         </div>
                         <p class="cheer-msg" id="msg-photo-01"></p>
+
+                        <div class="comments">
+                            <form class="comment-form" data-photo-id="photo-01">
+                                <input type="text" class="c-nick" maxlength="20" placeholder="별명 (최대 20자)" aria-label="별명">
+                                <textarea class="c-msg" maxlength="200" placeholder="댓글을 남겨 주세요 (최대 200자)" aria-label="댓글 내용"></textarea>
+                                <button type="submit" class="comment-submit">댓글 남기기</button>
+                                <p class="comment-form-msg"></p>
+                            </form>
+                            <ul class="comment-list" id="clist-photo-01"></ul>
+                        </div>
                     </div>
                 </div>
 
@@ -411,6 +527,16 @@
                             <span class="cheer-count" id="dislike-photo-02">—</span>
                         </div>
                         <p class="cheer-msg" id="msg-photo-02"></p>
+
+                        <div class="comments">
+                            <form class="comment-form" data-photo-id="photo-02">
+                                <input type="text" class="c-nick" maxlength="20" placeholder="별명 (최대 20자)" aria-label="별명">
+                                <textarea class="c-msg" maxlength="200" placeholder="댓글을 남겨 주세요 (최대 200자)" aria-label="댓글 내용"></textarea>
+                                <button type="submit" class="comment-submit">댓글 남기기</button>
+                                <p class="comment-form-msg"></p>
+                            </form>
+                            <ul class="comment-list" id="clist-photo-02"></ul>
+                        </div>
                     </div>
                 </div>
 
@@ -429,6 +555,16 @@
                             <span class="cheer-count" id="dislike-photo-03">—</span>
                         </div>
                         <p class="cheer-msg" id="msg-photo-03"></p>
+
+                        <div class="comments">
+                            <form class="comment-form" data-photo-id="photo-03">
+                                <input type="text" class="c-nick" maxlength="20" placeholder="별명 (최대 20자)" aria-label="별명">
+                                <textarea class="c-msg" maxlength="200" placeholder="댓글을 남겨 주세요 (최대 200자)" aria-label="댓글 내용"></textarea>
+                                <button type="submit" class="comment-submit">댓글 남기기</button>
+                                <p class="comment-form-msg"></p>
+                            </form>
+                            <ul class="comment-list" id="clist-photo-03"></ul>
+                        </div>
                     </div>
                 </div>
 
@@ -537,6 +673,139 @@
 
         // ── 초기 횟수 로드 ───────────────────────────────────────
         loadCounts();
+
+        // ===================== 댓글 =====================
+        const COMMENT_API = '/api/comments';
+
+        // 날짜 포맷 (YYYY-MM-DD HH:mm)
+        function formatDate(iso) {
+            try {
+                const d = new Date(iso);
+                const pad = (n) => String(n).padStart(2, '0');
+                return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ` +
+                       `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+            } catch { return ''; }
+        }
+
+        // 댓글 목록 조회 및 렌더링 (textContent만 사용 → XSS 방지)
+        async function loadComments(photoId) {
+            const listEl = document.getElementById('clist-' + photoId);
+            if (!listEl) return;
+
+            try {
+                const res = await fetch(COMMENT_API + '?photo_id=' + encodeURIComponent(photoId));
+                if (!res.ok) throw new Error('조회 실패');
+                const data = await res.json();
+                const comments = data.comments || [];
+
+                listEl.innerHTML = '';
+
+                if (comments.length === 0) {
+                    const empty = document.createElement('li');
+                    empty.className = 'comment-empty';
+                    empty.textContent = '아직 댓글이 없습니다. 첫 댓글을 남겨 주세요.';
+                    listEl.appendChild(empty);
+                    return;
+                }
+
+                for (const c of comments) {
+                    const li = document.createElement('li');
+                    li.className = 'comment-item';
+
+                    const head = document.createElement('div');
+                    const nick = document.createElement('span');
+                    nick.className = 'comment-nick';
+                    nick.textContent = c.nickname;           // 안전한 글자로 표시
+                    const date = document.createElement('span');
+                    date.className = 'comment-date';
+                    date.textContent = formatDate(c.created_at);
+                    head.appendChild(nick);
+                    head.appendChild(date);
+
+                    const text = document.createElement('p');
+                    text.className = 'comment-text';
+                    text.textContent = c.message;            // 안전한 글자로 표시
+
+                    li.appendChild(head);
+                    li.appendChild(text);
+                    listEl.appendChild(li);
+                }
+            } catch (err) {
+                console.error('댓글 조회 실패:', err.message);
+                listEl.innerHTML = '';
+                const errLi = document.createElement('li');
+                errLi.className = 'comment-empty';
+                errLi.textContent = '댓글을 불러오지 못했습니다.';
+                listEl.appendChild(errLi);
+            }
+        }
+
+        // 댓글 폼 제출 처리
+        document.querySelectorAll('.comment-form').forEach(function(form) {
+            const photoId = form.dataset.photoId;
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+
+                const nickEl = form.querySelector('.c-nick');
+                const msgEl  = form.querySelector('.c-msg');
+                const btn    = form.querySelector('.comment-submit');
+                const formMsg = form.querySelector('.comment-form-msg');
+
+                const nickname = nickEl.value.trim();
+                const message  = msgEl.value.trim();
+
+                // 클라이언트 1차 검사
+                if (!nickname) {
+                    formMsg.textContent = '별명을 입력해 주세요.';
+                    formMsg.className = 'comment-form-msg error';
+                    return;
+                }
+                if (!message) {
+                    formMsg.textContent = '댓글 내용을 입력해 주세요.';
+                    formMsg.className = 'comment-form-msg error';
+                    return;
+                }
+
+                btn.disabled = true;
+                formMsg.textContent = '저장 중…';
+                formMsg.className = 'comment-form-msg';
+
+                try {
+                    const res = await fetch(COMMENT_API, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ photo_id: photoId, nickname, message }),
+                    });
+
+                    if (!res.ok) {
+                        let errMsg = '저장에 실패했습니다. 다시 시도해 주세요.';
+                        try {
+                            const errData = await res.json();
+                            if (errData.error) errMsg = errData.error;
+                        } catch {}
+                        throw new Error(errMsg);
+                    }
+
+                    // 성공: 입력창 비우고 목록 재조회
+                    nickEl.value = '';
+                    msgEl.value = '';
+                    await loadComments(photoId);
+                    formMsg.textContent = '댓글이 등록되었습니다 ✓';
+                    formMsg.className = 'comment-form-msg';
+                    setTimeout(() => { formMsg.textContent = ''; }, 2000);
+
+                } catch (err) {
+                    formMsg.textContent = err.message || '저장에 실패했습니다.';
+                    formMsg.className = 'comment-form-msg error';
+                } finally {
+                    btn.disabled = false;
+                }
+            });
+        });
+
+        // 초기 댓글 로드
+        ALLOWED.forEach(function(id) { loadComments(id); });
     </script>
 
 </body>
