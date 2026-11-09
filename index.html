@@ -11,212 +11,241 @@
 
     <style>
         :root {
-            --navy: #172b4d;
-            --blue: #426da3;
-            --light: #f3f7fb;
-            --line: #e2e8f0;
-            --muted: #586a80;
+            --bg: #0e1116;
+            --bg-soft: #161b22;
+            --card: #1c232d;
+            --line: #2a3340;
+            --text: #e6edf3;
+            --muted: #8b98a9;
+            --accent: #6ea8fe;
+            --accent-2: #a78bfa;
+            --like: #3fb950;
+            --dislike: #f85149;
         }
 
         * { box-sizing: border-box; }
 
-        html { 
-            scroll-behavior: smooth; 
-            scroll-padding-top: 88px; 
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 88px;
         }
 
-        body { 
-            margin: 0; 
-            color: #243248; 
-            font-family: Pretendard, 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif; 
+        body {
+            margin: 0;
+            color: var(--text);
+            background: var(--bg);
+            font-family: Pretendard, 'Noto Sans KR', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
-        a { 
-            color: inherit; 
-            text-decoration: none; 
-        }
+        a { color: inherit; text-decoration: none; }
 
-        .wrap { 
-            max-width: 1050px; 
-            margin: 0 auto; 
-            padding: 0 26px; 
+        .wrap {
+            max-width: 1080px;
+            margin: 0 auto;
+            padding: 0 26px;
         }
 
         /* 상단 헤더 */
-        header { 
-            position: sticky; 
-            top: 0; 
-            z-index: 10; 
-            background: rgba(255, 255, 255, 0.95); 
-            backdrop-filter: blur(8px);
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: rgba(14, 17, 22, 0.72);
+            backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--line);
         }
 
-        .nav { 
-            min-height: 70px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
+        .nav {
+            min-height: 68px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .logo { 
-            font-size: 19px; 
-            font-weight: 800; 
-            color: var(--navy); 
-            letter-spacing: -0.5px; 
+        .logo {
+            font-size: 18px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
-        .menu { 
-            display: flex; 
-            gap: 22px; 
-            flex-wrap: wrap; 
+        .menu {
+            display: flex;
+            gap: 26px;
+            flex-wrap: wrap;
         }
 
-        .menu a { 
-            color: var(--muted); 
-            font-size: 13px; 
-            font-weight: 600; 
+        .menu a {
+            color: var(--muted);
+            font-size: 13px;
+            font-weight: 600;
             transition: color 0.2s;
         }
 
-        .menu a:hover, 
-        .menu a:focus-visible { 
-            color: var(--blue); 
-        }
+        .menu a:hover,
+        .menu a:focus-visible { color: var(--text); }
 
         /* 메인 히어로 섹션 */
-        .hero { 
-            background: linear-gradient(120deg, #f0f5fb 0%, #ffffff 78%); 
-            padding: 100px 0 80px; 
+        .hero {
+            position: relative;
+            padding: 130px 0 110px;
+            overflow: hidden;
+            background:
+                radial-gradient(900px 500px at 80% -10%, rgba(110,168,254,0.18), transparent 60%),
+                radial-gradient(700px 500px at 10% 20%, rgba(167,139,250,0.16), transparent 55%),
+                var(--bg);
         }
 
-        .eyebrow { 
-            color: var(--blue); 
-            font-weight: 700; 
-            font-size: 13px; 
-            letter-spacing: 1px; 
+        .eyebrow {
+            display: inline-block;
+            color: var(--accent);
+            font-weight: 700;
+            font-size: 12px;
+            letter-spacing: 2px;
             text-transform: uppercase;
+            padding: 6px 14px;
+            border: 1px solid var(--line);
+            border-radius: 999px;
+            background: rgba(110,168,254,0.08);
         }
 
-        h1 { 
-            color: var(--navy); 
-            font-size: clamp(38px, 6vw, 62px); 
-            line-height: 1.2; 
-            letter-spacing: -1px;
-            margin: 12px 0 20px;
+        h1 {
+            font-size: clamp(40px, 6.5vw, 68px);
+            line-height: 1.12;
+            letter-spacing: -1.5px;
+            margin: 20px 0 20px;
+            font-weight: 800;
         }
 
-        .hero p { 
-            max-width: 650px; 
-            color: var(--muted); 
-            font-size: 17px; 
-            line-height: 1.6;
+        h1 .grad {
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            max-width: 620px;
+            color: var(--muted);
+            font-size: 17px;
+            line-height: 1.7;
             margin: 0;
         }
 
-        .actions { 
-            display: flex; 
-            gap: 12px; 
-            flex-wrap: wrap; 
-            margin-top: 32px; 
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 36px;
         }
 
-        /* 버튼 스타일 */
-        .btn { 
-            display: inline-block; 
-            border-radius: 8px; 
-            padding: 11px 20px; 
-            font-size: 14px; 
-            font-weight: 600; 
-            transition: all 0.2s;
+        /* 버튼 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border-radius: 10px;
+            padding: 12px 22px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
         }
 
-        .btn.primary { 
-            background: var(--navy); 
-            color: #ffffff; 
+        .btn.primary {
+            background: linear-gradient(90deg, var(--accent), var(--accent-2));
+            color: #0e1116;
+            box-shadow: 0 8px 24px rgba(110,168,254,0.25);
         }
 
         .btn.primary:hover {
-            background: #0f1d35;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 30px rgba(110,168,254,0.35);
         }
 
-        .btn.secondary { 
-            background: #ffffff; 
-            color: var(--navy); 
+        .btn.secondary {
+            background: transparent;
+            color: var(--text);
             border: 1px solid var(--line);
         }
 
         .btn.secondary:hover {
-            background: var(--light);
+            background: var(--bg-soft);
+            border-color: var(--accent);
         }
 
         /* 컨텐츠 섹션 */
-        section { 
-            padding: 80px 0; 
+        section { padding: 90px 0; }
+
+        .section-title {
+            margin: 0 0 10px;
+            font-size: 30px;
+            letter-spacing: -0.8px;
+            font-weight: 800;
         }
 
-        .section-title { 
-            margin: 0 0 8px; 
-            font-size: 29px; 
-            letter-spacing: -0.8px; 
-            color: var(--navy);
+        .section-sub {
+            color: var(--muted);
+            margin: 0 0 36px;
+            font-size: 15px;
+            line-height: 1.6;
+            max-width: 640px;
         }
 
-        .section-sub { 
-            color: var(--muted); 
-            margin: 0 0 32px; 
-            font-size: 14px; 
-        }
-
-        .intro { 
-            max-width: 800px; 
-            font-size: 16px; 
-            line-height: 1.7; 
+        .intro {
+            max-width: 780px;
+            font-size: 16px;
+            line-height: 1.85;
+            color: #c4cdd8;
         }
 
         /* 사진 카드 그리드 */
         .photo-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-            margin-top: 32px;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 26px;
+            margin-top: 36px;
         }
 
         .photo-card {
             border: 1px solid var(--line);
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            background: #fff;
-            transition: box-shadow 0.2s;
+            background: var(--card);
+            transition: transform 0.2s, box-shadow 0.25s, border-color 0.2s;
         }
 
         .photo-card:hover {
-            box-shadow: 0 4px 20px rgba(23,43,77,0.10);
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.45);
+            border-color: #3a4656;
+        }
+
+        .photo-card .img-box {
+            overflow: hidden;
+            aspect-ratio: 4 / 3;
+            background: var(--bg-soft);
         }
 
         .photo-card img {
             width: 100%;
-            height: 200px;
+            height: 100%;
             object-fit: cover;
             display: block;
-            background: var(--light);
+            transition: transform 0.4s ease;
         }
 
-        .photo-card-body {
-            padding: 16px 20px 20px;
-        }
+        .photo-card:hover img { transform: scale(1.06); }
 
-        .photo-card-title {
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--navy);
-            margin: 0 0 12px;
-        }
+        .photo-card-body { padding: 18px 20px 22px; }
 
         .cheer-row {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
             flex-wrap: wrap;
         }
 
@@ -224,49 +253,81 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            background: var(--light);
+            background: var(--bg-soft);
             border: 1px solid var(--line);
-            border-radius: 8px;
-            padding: 8px 16px;
+            border-radius: 10px;
+            padding: 9px 15px;
             font-size: 14px;
-            font-weight: 600;
-            color: var(--navy);
+            font-weight: 700;
+            color: var(--text);
             cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
+            transition: background 0.2s, border-color 0.2s, transform 0.1s;
         }
 
+        .cheer-btn:active:not(:disabled) { transform: scale(0.95); }
+
         .cheer-btn:hover:not(:disabled) {
-            background: #e2eaf5;
-            border-color: var(--blue);
+            border-color: var(--like);
+            background: rgba(63,185,80,0.12);
         }
 
         .cheer-btn.dislike:hover:not(:disabled) {
-            background: #fdecea;
-            border-color: #c0392b;
+            border-color: var(--dislike);
+            background: rgba(248,81,73,0.12);
         }
 
         .cheer-btn:disabled {
-            opacity: 0.6;
+            opacity: 0.55;
             cursor: not-allowed;
         }
 
         .cheer-count {
-            font-size: 14px;
-            color: var(--muted);
-            font-weight: 600;
-            min-width: 24px;
+            font-size: 15px;
+            color: var(--text);
+            font-weight: 800;
+            min-width: 22px;
+            margin-right: 4px;
         }
 
         .cheer-msg {
             font-size: 12px;
-            margin-top: 8px;
+            margin: 12px 0 0;
             min-height: 18px;
-            color: var(--blue);
+            color: var(--like);
+            font-weight: 600;
         }
 
-        .cheer-msg.error {
-            color: #c0392b;
+        .cheer-msg.error { color: var(--dislike); }
+
+        /* 연락처 */
+        .contact-box {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 16px 26px;
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            background: var(--card);
+            font-size: 16px;
+            font-weight: 700;
+            transition: border-color 0.2s, transform 0.15s;
         }
+
+        .contact-box:hover {
+            border-color: var(--accent);
+            transform: translateY(-2px);
+        }
+
+        /* 푸터 */
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 30px 0;
+            text-align: center;
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .divider { border-top: 1px solid var(--line); }
     </style>
 </head>
 <body>
@@ -278,8 +339,7 @@
             <a href="#" class="logo">SEO YOON SEOK</a>
             <nav class="menu">
                 <a href="#about">소개</a>
-                <a href="#projects">프로젝트</a>
-                <a href="#skills">역량</a>
+                <a href="#projects">사진</a>
                 <a href="#contact">연락처</a>
             </nav>
         </div>
@@ -290,8 +350,7 @@
         <div class="wrap">
             <!-- 2. 전공/분야 변경 -->
             <div class="eyebrow">경영정보학과 / 데이터 분석</div>
-            <!-- 3. 메인 타이틀 변경 -->
-            <h1>렌즈로 담은<br>서윤석의 시선</h1>
+            <h1>렌즈로 담은<br><span class="grad">서윤석의 시선</span></h1>
             <p>국민대학교 경영정보학과에 재학 중입니다. 일상 속 순간을 사진으로 기록하고, 방문자의 응원으로 다음 작품의 방향을 찾습니다.</p>
             <div class="actions">
                 <a href="#projects" class="btn primary">사진 보기</a>
@@ -321,9 +380,8 @@
 
                 <!-- 사진 1 -->
                 <div class="photo-card">
-                    <img src="images/photo-01.jpg" alt="서울 야경 전경" id="img-photo-01">
+                    <div class="img-box"><img src="images/photo-01.jpg" alt="서울 야경 전경" id="img-photo-01"></div>
                     <div class="photo-card-body">
-                        <p class="photo-card-title"></p>
                         <div class="cheer-row">
                             <button class="cheer-btn" data-photo-id="photo-01" data-reaction="like" aria-label="사진 1 좋아요">
                                 👍 좋아요
@@ -340,9 +398,8 @@
 
                 <!-- 사진 2 -->
                 <div class="photo-card">
-                    <img src="images/photo-02.jpg" alt="남산타워 야경" id="img-photo-02">
+                    <div class="img-box"><img src="images/photo-02.jpg" alt="남산타워 야경" id="img-photo-02"></div>
                     <div class="photo-card-body">
-                        <p class="photo-card-title"></p>
                         <div class="cheer-row">
                             <button class="cheer-btn" data-photo-id="photo-02" data-reaction="like" aria-label="사진 2 좋아요">
                                 👍 좋아요
@@ -359,9 +416,8 @@
 
                 <!-- 사진 3 -->
                 <div class="photo-card">
-                    <img src="images/photo-03.jpg" alt="연못 야경" id="img-photo-03">
+                    <div class="img-box"><img src="images/photo-03.jpg" alt="연못 야경" id="img-photo-03"></div>
                     <div class="photo-card-body">
-                        <p class="photo-card-title"></p>
                         <div class="cheer-row">
                             <button class="cheer-btn" data-photo-id="photo-03" data-reaction="like" aria-label="사진 3 좋아요">
                                 👍 좋아요
@@ -385,11 +441,18 @@
         <div class="wrap">
             <h2 class="section-title">Contact</h2>
             <p class="section-sub">사진이나 협업 문의는 이메일로 연락해 주세요.</p>
-            <a href="mailto:yoonseokseo@kookmin.ac.kr" class="btn primary">
+            <a href="mailto:yoonseokseo@kookmin.ac.kr" class="contact-box">
                 ✉️ yoonseokseo@kookmin.ac.kr
             </a>
         </div>
     </section>
+
+    <!-- 푸터 -->
+    <footer>
+        <div class="wrap">
+            © 2026 SEO YOON SEOK · 직접 찍은 사진을 소개하는 공간
+        </div>
+    </footer>
 
     <script>
         const API = '/api/react';
